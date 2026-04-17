@@ -381,7 +381,7 @@ volume = response.json()['volume_litros']
 
 ---
 
-## 📞 Próximos Passos
+##  Próximos Passos
 
 - [ ] Treinar modelo → `python scripts/treinar_irrigacao.py`
 - [ ] Iniciar API → `python main.py`
