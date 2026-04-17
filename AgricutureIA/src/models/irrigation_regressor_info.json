@@ -1,0 +1,30 @@
+{
+  "tipo": "regressao",
+  "mae": 1.705328479525385,
+  "rmse": 2.1716448969716002,
+  "r2_score": 0.8651477345588134,
+  "features": [
+    "Temperature_C",
+    "Humidity",
+    "Rainfall_mm",
+    "Soil_pH",
+    "Soil_Moisture",
+    "Organic_Carbon",
+    "Electrical_Conductivity",
+    "Sunlight_Hours",
+    "Wind_Speed_kmh",
+    "Field_Area_hectare",
+    "Previous_Irrigation_mm",
+    "Soil_Type",
+    "Crop_Type",
+    "Crop_Growth_Stage",
+    "Season",
+    "Irrigation_Type",
+    "Water_Source",
+    "Region",
+    "Mulching_Used"
+  ],
+  "n_estimators": 200,
+  "max_depth": 15,
+  "data_criacao": "2026-04-16 14:47:31.590998"
+}

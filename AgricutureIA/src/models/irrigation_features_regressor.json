@@ -1,0 +1,24 @@
+{
+  "todas_as_features": [
+    "Temperature_C",
+    "Humidity",
+    "Rainfall_mm",
+    "Soil_pH",
+    "Soil_Moisture",
+    "Organic_Carbon",
+    "Electrical_Conductivity",
+    "Sunlight_Hours",
+    "Wind_Speed_kmh",
+    "Field_Area_hectare",
+    "Previous_Irrigation_mm",
+    "Soil_Type",
+    "Crop_Type",
+    "Crop_Growth_Stage",
+    "Season",
+    "Irrigation_Type",
+    "Water_Source",
+    "Region",
+    "Mulching_Used"
+  ],
+  "n_features": 19
+}
