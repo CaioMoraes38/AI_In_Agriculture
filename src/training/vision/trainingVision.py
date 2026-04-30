@@ -6,7 +6,7 @@ import os
 
 IMG_SIZE = (224, 224)
 BATCH_SIZE = 32
-EPOCHS = 20  
+EPOCHS = 5  
 NUM_CLASSES = 10 
 DATASET_PATH = "plantvillagedataset/color"
 SAVE_PATH = "src/models/modelsVisionV2"
