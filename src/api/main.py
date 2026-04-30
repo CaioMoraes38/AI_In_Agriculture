@@ -6,12 +6,17 @@ from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from services import load_model
 from routeIrrigationApi import router as irrigation_router
+from routeVisionApi import router as vision_router, load_vision_model
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    print("\n🚀 Iniciando Agricultura IA - Irrigation Prediction API...")
+    print("\n🚀 Iniciando Agricultura IA - API Completa...")
+    print("   📊 Carregando modelo de irrigação...")
     load_model()
+    print("   🧠 Carregando modelo de visão...")
+    load_vision_model()
+    print("   ✓ Todos os modelos carregados com sucesso!\n")
     
     yield
     
@@ -19,24 +24,26 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="Agricultura IA - Irrigation Prediction API",
-    description="API para predição de necessidade de irrigação baseada em Machine Learning",
+    title="Agricultura IA - Sistema Completo",
+    description="API para predição de irrigação e detecção de doenças em plantas",
     version="1.0.0",
     lifespan=lifespan
 )
 
 app.include_router(irrigation_router)
+app.include_router(vision_router)
 
 
 @app.get("/")
 async def root():
-
     return {
         "message": "Bem-vindo à Agricultura IA",
         "version": "1.0.0",
+        "description": "Sistema completo de IA para agricultura inteligente",
         "endpoints": {
             "docs": "/docs",
-            "irrigation": "/irrigation"
+            "irrigation": "/irrigation",
+            "vision": "/vision"
         }
     }
 
