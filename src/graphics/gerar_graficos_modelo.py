@@ -1,9 +1,3 @@
-"""
-Geração de Gráficos para Análise do Modelo de Irrigação
-
-Este script cria visualizações dos dados de treinamento e resultados do modelo
-"""
-
 import pandas as pd
 import numpy as np
 import os
@@ -11,23 +5,19 @@ import sys
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 
-# Configurar encoding
 if sys.platform == 'win32':
     import io
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
-# Adicionar caminho para importar o modelo
 current_dir = os.path.dirname(os.path.abspath(__file__))
 project_root = os.path.dirname(os.path.dirname(current_dir))
 sys.path.insert(0, os.path.join(project_root, 'src', 'training', 'irrigation'))
 
 from trainingIrrigation import IrrigationAIModelV1
 
-# Configurar estilo dos gráficos
 plt.style.use('default')
 
-# Criar pasta de saída
-graphics_dir = current_dir  # Salvar na pasta graphics
+graphics_dir = current_dir
 os.makedirs(graphics_dir, exist_ok=True)
 
 print("\n" + "=" * 80)
@@ -37,10 +27,8 @@ print(f"\nGraficos serao salvos em: {graphics_dir}\n")
 
 
 def grafico_feature_importance():
-    """Gráfico de Importância das Features"""
     print("Criando: Importancia das Features...")
     
-    # Dados de importância (do treinamento)
     features = ['Sunlight_Hours', 'Crop_Type', 'Temperature_C', 'Wind_Speed_kmh',
                 'Crop_Growth_Stage', 'Field_Area_hectare', 'Rainfall_mm', 'Humidity',
                 'Soil_Moisture', 'Soil_Type', 'Irrigation_Type']
@@ -56,7 +44,6 @@ def grafico_feature_importance():
     ax.set_title('Importancia das Features no Modelo de Irrigacao', fontsize=14, fontweight='bold', pad=20)
     ax.set_xlim(0, max(importance) * 1.1)
     
-    # Adicionar valores nas barras
     for i, (bar, imp) in enumerate(zip(bars, importance)):
         ax.text(imp + 0.01, i, f'{imp*100:.1f}%', va='center', fontsize=10, fontweight='bold')
     
@@ -67,13 +54,11 @@ def grafico_feature_importance():
 
 
 def grafico_metricas_desempenho():
-    """Gráfico de Métricas de Desempenho"""
     print("📈 Criando: Métricas de Desempenho...")
     
     fig, axes = plt.subplots(2, 2, figsize=(14, 10))
     fig.suptitle('Métricas de Desempenho do Modelo', fontsize=16, fontweight='bold', y=0.995)
     
-    # R² Score
     ax = axes[0, 0]
     datasets = ['Treino', 'Teste', 'CV Média']
     r2_scores = [0.9963, 0.9815, 0.9834]
@@ -87,7 +72,6 @@ def grafico_metricas_desempenho():
         ax.text(bar.get_x() + bar.get_width()/2., height,
                 f'{score:.4f}', ha='center', va='bottom', fontweight='bold')
     
-    # MAE (Erro Médio Absoluto)
     ax = axes[0, 1]
     mae_values = [12.36, 27.84]
     datasets_mae = ['Treino', 'Teste']
@@ -100,7 +84,6 @@ def grafico_metricas_desempenho():
         ax.text(bar.get_x() + bar.get_width()/2., height,
                 f'{mae:.2f}', ha='center', va='bottom', fontweight='bold')
     
-    # RMSE
     ax = axes[1, 0]
     rmse_values = [16.88, 37.80]
     bars3 = ax.bar(datasets_mae, rmse_values, color=['#f39c12', '#e74c3c'], edgecolor='black', linewidth=2)
@@ -111,7 +94,6 @@ def grafico_metricas_desempenho():
         ax.text(bar.get_x() + bar.get_width()/2., height,
                 f'{rmse:.2f}', ha='center', va='bottom', fontweight='bold')
     
-    # Resumo Textual
     ax = axes[1, 1]
     ax.axis('off')
     
@@ -145,7 +127,6 @@ def grafico_metricas_desempenho():
 
 
 def grafico_acuracia_por_faixa():
-    """Gráfico de Acurácia por Faixa de ETc"""
     print("📈 Criando: Acurácia por Faixa de ETc...")
     
     fig, ax = plt.subplots(figsize=(12, 6))
@@ -159,7 +140,6 @@ def grafico_acuracia_por_faixa():
     
     bars = ax.bar(faixas, acuracia, color=colors, edgecolor='black', linewidth=2, alpha=0.8)
     
-    # Adicionar valores nas barras
     for bar, acc, qtd in zip(bars, acuracia, quantidade):
         height = bar.get_height()
         ax.text(bar.get_x() + bar.get_width()/2., height + 1,
@@ -179,19 +159,16 @@ def grafico_acuracia_por_faixa():
 
 
 def grafico_distribuicao_erros():
-    """Gráfico de Distribuição de Erros"""
     print("📈 Criando: Distribuição de Erros...")
     
-    # Simular erros (baseado nos dados reais)
     np.random.seed(42)
     erros = np.concatenate([
-        np.random.normal(-2.51, 37.72, 1940),  # Maioria dos erros
-        np.random.normal(-20, 50, 60)  # Outliers
+        np.random.normal(-2.51, 37.72, 1940),
+        np.random.normal(-20, 50, 60)
     ])
     
     fig, axes = plt.subplots(1, 2, figsize=(14, 5))
     
-    # Histograma
     ax = axes[0]
     ax.hist(erros, bins=50, color='#3498db', edgecolor='black', alpha=0.7)
     ax.axvline(x=0, color='red', linestyle='--', linewidth=2, label='Erro Ideal (0)')
@@ -202,7 +179,6 @@ def grafico_distribuicao_erros():
     ax.legend()
     ax.grid(axis='y', alpha=0.3)
     
-    # Box plot
     ax = axes[1]
     bp = ax.boxplot([erros], labels=['Erros'], patch_artist=True)
     bp['boxes'][0].set_facecolor('#3498db')
@@ -219,21 +195,17 @@ def grafico_distribuicao_erros():
 
 
 def grafico_predicoes_vs_reais():
-    """Gráfico de Predições vs Valores Reais"""
     print("📈 Criando: Predições vs Valores Reais...")
     
-    # Simular dados (baseado em padrão real)
     np.random.seed(42)
     y_real = np.random.uniform(300, 2100, 200)
     y_pred = y_real + np.random.normal(0, 50, 200)
     
     fig, ax = plt.subplots(figsize=(12, 8))
     
-    # Scatter plot
     scatter = ax.scatter(y_real, y_pred, alpha=0.6, s=50, c=np.abs(y_pred - y_real), 
                          cmap='RdYlGn_r', edgecolor='black', linewidth=0.5)
     
-    # Linha perfeita
     min_val = min(y_real.min(), y_pred.min())
     max_val = max(y_real.max(), y_pred.max())
     ax.plot([min_val, max_val], [min_val, max_val], 'r--', linewidth=2, label='Predição Perfeita')
@@ -244,7 +216,6 @@ def grafico_predicoes_vs_reais():
     ax.legend(fontsize=11)
     ax.grid(alpha=0.3)
     
-    # Colorbar
     cbar = plt.colorbar(scatter, ax=ax)
     cbar.set_label('Erro Absoluto (mm/dia)', fontweight='bold')
     
@@ -255,7 +226,6 @@ def grafico_predicoes_vs_reais():
 
 
 def grafico_sensibilidade_features():
-    """Gráfico de Sensibilidade das Features"""
     print("📈 Criando: Sensibilidade das Features...")
     
     fig, ax = plt.subplots(figsize=(12, 7))
@@ -266,7 +236,6 @@ def grafico_sensibilidade_features():
     
     bars = ax.barh(features, impacto, color=cores, edgecolor='black', linewidth=2, alpha=0.8)
     
-    # Adicionar valores
     for bar, imp in zip(bars, impacto):
         width = bar.get_width()
         label_x = width + (20 if width > 0 else -20)
@@ -286,10 +255,8 @@ def grafico_sensibilidade_features():
 
 
 def grafico_dados_treinamento():
-    """Gráfico sobre os Dados de Treinamento"""
     print("Criando: Analise dos Dados de Treinamento...")
     
-    # Carregar dados reais
     data_path = os.path.join(project_root, 'src', 'preprocessing', 'irrigation_prediction_with_etc.csv')
     
     df = pd.read_csv(data_path, skipinitialspace=True, on_bad_lines='warn')
@@ -298,7 +265,6 @@ def grafico_dados_treinamento():
     fig, axes = plt.subplots(2, 2, figsize=(14, 10))
     fig.suptitle('Análise dos Dados de Treinamento', fontsize=16, fontweight='bold', y=0.995)
     
-    # Distribuição de ETc
     ax = axes[0, 0]
     ax.hist(df['ETc_mm_dia'], bins=50, color='#3498db', edgecolor='black', alpha=0.7)
     ax.set_xlabel('ETc (mm/dia)', fontweight='bold')
@@ -309,7 +275,6 @@ def grafico_dados_treinamento():
     ax.legend()
     ax.grid(axis='y', alpha=0.3)
     
-    # Distribuição de Temperatura
     ax = axes[0, 1]
     ax.hist(df['Temperature_C'], bins=30, color='#e74c3c', edgecolor='black', alpha=0.7)
     ax.set_xlabel('Temperatura (°C)', fontweight='bold')
@@ -320,7 +285,6 @@ def grafico_dados_treinamento():
     ax.legend()
     ax.grid(axis='y', alpha=0.3)
     
-    # Distribuição por Tipo de Cultivo
     ax = axes[1, 0]
     crop_counts = df['Crop_Type'].str.strip().value_counts()
     colors_crop = plt.cm.Set3(range(len(crop_counts)))
@@ -332,7 +296,6 @@ def grafico_dados_treinamento():
         ax.text(i, count + 50, str(count), ha='center', fontweight='bold')
     ax.grid(axis='y', alpha=0.3)
     
-    # Distribuição por Tipo de Solo
     ax = axes[1, 1]
     soil_counts = df['Soil_Type'].str.strip().value_counts()
     colors_soil = plt.cm.Set2(range(len(soil_counts)))
@@ -350,7 +313,6 @@ def grafico_dados_treinamento():
 
 
 def grafico_resumo_modelo():
-    """Gráfico com Resumo Completo do Modelo"""
     print("📈 Criando: Resumo Completo do Modelo...")
     
     fig = plt.figure(figsize=(14, 10))
@@ -358,13 +320,9 @@ def grafico_resumo_modelo():
     
     fig.suptitle('MODELO V1 - RESUMO EXECUTIVO', fontsize=18, fontweight='bold', y=0.98)
     
-    # Título principal
     ax_title = fig.add_subplot(gs[0, :])
     ax_title.axis('off')
     title_text = "Predição de Necessidade de Irrigação\nCombase em 10.000 registros históricos"
-    ax_title.text(0.5, 0.5, title_text, ha='center', va='center', fontsize=16, fontweight='bold',
-                  bbox=dict(boxstyle='round', facecolor='lightblue', alpha=0.7))
-    
     # Métrica 1: R² Score
     ax1 = fig.add_subplot(gs[1, 0])
     ax1.text(0.5, 0.7, '98.15%', ha='center', va='center', fontsize=28, fontweight='bold', color='#2ecc71')
@@ -372,21 +330,18 @@ def grafico_resumo_modelo():
     ax1.axis('off')
     ax1.add_patch(plt.Rectangle((0.05, 0.05), 0.9, 0.9, fill=False, edgecolor='#2ecc71', linewidth=3))
     
-    # Métrica 2: Acurácia
     ax2 = fig.add_subplot(gs[1, 1])
     ax2.text(0.5, 0.7, '97.9%', ha='center', va='center', fontsize=28, fontweight='bold', color='#3498db')
     ax2.text(0.5, 0.3, 'Acurácia <10%', ha='center', va='center', fontsize=12, fontweight='bold')
     ax2.axis('off')
     ax2.add_patch(plt.Rectangle((0.05, 0.05), 0.9, 0.9, fill=False, edgecolor='#3498db', linewidth=3))
     
-    # Métrica 3: MAE
     ax3 = fig.add_subplot(gs[1, 2])
     ax3.text(0.5, 0.7, '27.84', ha='center', va='center', fontsize=28, fontweight='bold', color='#e74c3c')
     ax3.text(0.5, 0.3, 'MAE (mm/dia)', ha='center', va='center', fontsize=12, fontweight='bold')
     ax3.axis('off')
     ax3.add_patch(plt.Rectangle((0.05, 0.05), 0.9, 0.9, fill=False, edgecolor='#e74c3c', linewidth=3))
     
-    # Features importantes
     ax4 = fig.add_subplot(gs[2, 0:2])
     features = ['Insolação', 'Cultivo', 'Temperatura', 'Vento']
     importance_vals = [36.1, 25.7, 24.0, 12.1]
@@ -399,7 +354,6 @@ def grafico_resumo_modelo():
         ax4.text(imp + 1, i, f'{imp:.1f}%', va='center', fontweight='bold')
     ax4.grid(axis='x', alpha=0.3)
     
-    # Status
     ax5 = fig.add_subplot(gs[2, 2])
     ax5.axis('off')
     status_text = """
@@ -424,8 +378,6 @@ def grafico_resumo_modelo():
 
 
 def main():
-    """Função principal"""
-    
     try:
         grafico_feature_importance()
         grafico_metricas_desempenho()
