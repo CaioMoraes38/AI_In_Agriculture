@@ -1,0 +1,10 @@
+{
+    "model_type": "MobileNetV2 Transfer Learning",
+    "num_classes": 10,
+    "image_size": "224x224",
+    "batch_size": 32,
+    "epochs": 10,
+    "train_accuracy": 0.9898816347122192,
+    "test_accuracy": 0.9570484757423401,
+    "training_date": "2026-05-18T17:13:17.306296"
+}

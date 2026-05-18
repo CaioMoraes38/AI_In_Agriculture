@@ -66,7 +66,7 @@ def grafico_metricas_desempenho():
     bars1 = ax.bar(datasets, r2_scores, color=colors_r2, edgecolor='black', linewidth=2)
     ax.set_ylabel('R² Score', fontweight='bold')
     ax.set_ylim(0.97, 1.0)
-    ax.set_title('R² Score (explicação da variância)', fontweight='bold')
+    ax.set_title('R² Score (explicacao da variancia)', fontweight='bold')
     for bar, score in zip(bars1, r2_scores):
         height = bar.get_height()
         ax.text(bar.get_x() + bar.get_width()/2., height,
@@ -323,7 +323,7 @@ def grafico_resumo_modelo():
     ax_title = fig.add_subplot(gs[0, :])
     ax_title.axis('off')
     title_text = "Predição de Necessidade de Irrigação\nCombase em 10.000 registros históricos"
-    # Métrica 1: R² Score
+    
     ax1 = fig.add_subplot(gs[1, 0])
     ax1.text(0.5, 0.7, '98.15%', ha='center', va='center', fontsize=28, fontweight='bold', color='#2ecc71')
     ax1.text(0.5, 0.3, 'R² Score', ha='center', va='center', fontsize=12, fontweight='bold')

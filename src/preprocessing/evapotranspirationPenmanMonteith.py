@@ -178,15 +178,12 @@ def process_irrigation_data(input_file, output_file):
 
 
 if __name__ == "__main__":
-    # Caminhos dos arquivos na mesma pasta
     current_dir = os.path.dirname(os.path.abspath(__file__))
     input_path = os.path.join(current_dir, "irrigation_prediction.csv")
     output_path = os.path.join(current_dir, "irrigation_prediction_with_etc.csv")
     
-    # Processar dados
     result_df = process_irrigation_data(input_path, output_path)
     
-    # Exibir primeiras linhas
     print("\nPrimeiras linhas do arquivo processado:")
     print(result_df[['Crop_Type', 'Crop_Growth_Stage', 'Temperature_C', 'Humidity', 
                       'Wind_Speed_kmh', 'Sunlight_Hours', 'Kc', 'ETo_mm_dia', 'ETc_mm_dia']].head())
